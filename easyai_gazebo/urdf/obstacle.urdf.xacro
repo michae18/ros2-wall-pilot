@@ -1,0 +1,171 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro" name="obstacle">
+    <xacro:property name="BASE_LEN" value="2.40"/>
+    <xacro:property name="BASE_WID" value="1.20"/>
+    <xacro:property name="BASE_HIG" value="0.03"/>
+
+    <xacro:property name="OBS_CYLINDER_RAD" value="0.015"/>
+    <xacro:property name="OBS_CYLINDER_WID" value="1.20"/>
+
+    <xacro:property name="OBS_LEG_LEN" value="2.4"/>
+    <xacro:property name="OBS_LEG_WID" value="0.03"/>
+    <xacro:property name="OBS_LEG_HIG" value="0.03"/>
+
+    <xacro:property name="PI" value="3.141592653589793"/>
+    <xacro:property name="SEP_X" value="0.66"/> <!-- obstacle_base_link로부터 떨어진 길이(삼각형 변의 길이 공식 사용) -->
+
+    <xacro:property name="BASE_MASS" value="5.0"/>
+    <xacro:property name="OBS_CYLINDER_MASS" value="0.5"/>
+    <xacro:property name="OBS_LEG_MASS" value="2.0"/>
+
+
+    <material name="dark">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+    </material>
+
+    <material name="gray">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+    </material>
+    
+    <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+    </material>
+
+
+    <link name="obstacle_base_link"/>
+
+    
+    <link name="obstacle_base">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${BASE_LEN} ${BASE_WID} ${BASE_HIG}"/>
+            </geometry>
+            <material name="dark"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${BASE_LEN} ${BASE_WID} ${BASE_HIG}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${BASE_MASS}"/>
+            <inertia 
+                ixx="${BASE_MASS/12.0 * (BASE_WID*BASE_WID + BASE_HIG*BASE_HIG)}"
+                iyy="${BASE_MASS/12.0 * (BASE_LEN*BASE_LEN + BASE_HIG*BASE_HIG)}"
+                izz="${BASE_MASS/12.0 * (BASE_LEN*BASE_LEN + BASE_WID*BASE_WID)}"
+                ixy="0.0" ixz="0.0" iyz="0.0"/>
+        </inertial>
+    </link>
+
+
+    <link name="obs_cylinder">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="${OBS_CYLINDER_RAD}" length="${OBS_CYLINDER_WID}"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+        
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="${OBS_CYLINDER_RAD}" length="${OBS_CYLINDER_WID}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${OBS_CYLINDER_MASS}"/>
+            <inertia 
+                ixx="${OBS_CYLINDER_MASS/12.0 * (3*OBS_CYLINDER_RAD*OBS_CYLINDER_RAD + OBS_CYLINDER_WID*OBS_CYLINDER_WID)}"
+                iyy="${OBS_CYLINDER_MASS/12.0 * (3*OBS_CYLINDER_RAD*OBS_CYLINDER_RAD + OBS_CYLINDER_WID*OBS_CYLINDER_WID)}"
+                izz="${OBS_CYLINDER_MASS/2.0 * OBS_CYLINDER_RAD*OBS_CYLINDER_RAD}"
+                ixy="0.0" ixz="0.0" iyz="0.0"/>
+        </inertial>
+    </link>
+
+
+    <link name="left_obs_leg">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${OBS_LEG_LEN} ${OBS_LEG_WID} ${OBS_LEG_HIG}"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${OBS_LEG_LEN} ${OBS_LEG_WID} ${OBS_LEG_HIG}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${OBS_LEG_MASS}"/>
+            <inertia 
+                ixx="${OBS_LEG_MASS/12.0 * (OBS_LEG_WID*OBS_LEG_WID + OBS_LEG_HIG*OBS_LEG_HIG)}"
+                iyy="${OBS_LEG_MASS/12.0 * (OBS_LEG_LEN*OBS_LEG_LEN + OBS_LEG_HIG*OBS_LEG_HIG)}"
+                izz="${OBS_LEG_MASS/12.0 * (OBS_LEG_LEN*OBS_LEG_LEN + OBS_LEG_WID*OBS_LEG_WID)}"
+                ixy="0.0" ixz="0.0" iyz="0.0"/>
+        </inertial>
+    </link>
+
+    <link name="right_obs_leg">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${OBS_LEG_LEN} ${OBS_LEG_WID} ${OBS_LEG_HIG}"/>
+            </geometry>
+            <material name="gray"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${OBS_LEG_LEN} ${OBS_LEG_WID} ${OBS_LEG_HIG}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${OBS_LEG_MASS}"/>
+            <inertia 
+                ixx="${OBS_LEG_MASS/12.0 * (OBS_LEG_WID*OBS_LEG_WID + OBS_LEG_HIG*OBS_LEG_HIG)}"
+                iyy="${OBS_LEG_MASS/12.0 * (OBS_LEG_LEN*OBS_LEG_LEN + OBS_LEG_HIG*OBS_LEG_HIG)}"
+                izz="${OBS_LEG_MASS/12.0 * (OBS_LEG_LEN*OBS_LEG_LEN + OBS_LEG_WID*OBS_LEG_WID)}"
+                ixy="0.0" ixz="0.0" iyz="0.0"/>
+        </inertial>
+    </link>
+
+
+
+    <joint name="obstacle_base_joint" type="fixed">
+        <parent link="obstacle_base_link"/>
+        <child  link="obs_cylinder"/>
+        <origin xyz="0 0 2.0" rpy="${90 * PI/180} 0 0"/>
+    </joint>
+
+    
+    <joint name="obs_cylinder_base_joint" type="fixed">
+        <parent link="obstacle_base_link"/>
+        <child link="obstacle_base"/>
+        <origin xyz="${SEP_X} 0 1" rpy="0 ${58 * PI/180} 0"/>
+    </joint>
+
+
+    <joint name="left_obstacle_joint" type="fixed">
+        <parent link="obstacle_base_link"/>
+        <child  link="left_obs_leg"/>
+        <origin xyz="-${SEP_X} ${BASE_WID/2 - OBS_LEG_WID/2} 1" rpy="0 -${58 * PI/180} 0"/>
+    </joint>
+
+    <joint name="right_obstacle_joint" type="fixed">
+        <parent link="obstacle_base_link"/>
+        <child  link="right_obs_leg"/>
+        <origin xyz="-${SEP_X} -${BASE_WID/2 - OBS_LEG_WID/2} 1" rpy="0 -${58 * PI/180} 0"/>
+    </joint>
+</robot>
