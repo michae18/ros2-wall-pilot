@@ -5,8 +5,8 @@
   <version>0.0.1</version>
   <description>Wall bot custom message package</description>
 
-  <maintainer email="you@example.com">Min</maintainer>
-  <license>Apache-2.0</license>
+  <maintainer email="mim010918@gmail.com">michael</maintainer>
+  <license>MIT</license>
 
   <export>                               
    <build_type>ament_cmake</build_type> 

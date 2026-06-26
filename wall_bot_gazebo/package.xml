@@ -6,7 +6,7 @@
   <author>Michae18</author>
   <description>wallbot_description_gazebo</description>
   <maintainer email="mim010918@gmail.com">michael</maintainer>
-  <license></license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
